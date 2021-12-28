@@ -1,0 +1,72 @@
+enum BookGenreEnum {
+  POLAR,
+  INFORMATIQUE,
+  HISTOIRE,
+  ANIMAUX,
+  PHILOSOPHIE,
+  RELIGION
+}
+
+type Book {
+  _id:ID!
+  authorId:ID
+  authorName: String
+  title: String!
+  description: String!
+  genre:BookGenreEnum
+}
+
+type Genre {
+  genres: [String]
+}
+
+type Author {
+  _id: ID!
+  firstName: String!
+  lastName: String!
+  books:[Book]
+}
+
+input AuthorInput {
+    firstName:String
+    lastName:String
+}
+
+
+input BookInput {
+    title:String!
+    description:String
+    authorId:ID 
+    genre:BookGenreEnum
+}
+
+input BookInputByParams {
+    title:String
+    description:String
+    authorId:ID
+    genre:BookGenreEnum
+    
+}
+
+type Query {
+  getAllAuthors: [Author]
+  getAuthor(_id: ID!): Author
+  getBooks:[Book]
+  getBook(_id:ID!):Book
+  findBooksByParams(book:BookInputByParams!):[Book]
+  getGenres: Genre
+}
+
+type MutationResponse {
+  ok: Boolean
+}
+
+type Mutation {
+  addAuthor(author: AuthorInput!): MutationResponse
+  addBook(book: BookInput!): MutationResponse
+  deleteAuthor(id: ID!): MutationResponse
+  deleteBook(id:ID!):MutationResponse
+  updateAuthor(id: ID!, author: AuthorInput!):MutationResponse
+  updateBook(id: ID!, book: BookInput!):MutationResponse
+  
+}
