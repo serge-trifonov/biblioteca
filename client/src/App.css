@@ -1,91 +1,81 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
-  .App{
-    margin: 5px;
-    border: 1px dotted green;
-    font-family: 'Courier New', Courier, monospace;
-  }
-  h1,h2{
-    text-align: center;
-    text-transform:uppercase;
-  }
-  .books{
-    padding: 5px;
-    margin: 5px;
-    border: 1px dotted green;
-  }
- 
+.App {
+  margin: 5px;
+  border: 1px dotted green;
+  font-family: "Courier New", Courier, monospace;
+}
+h1,
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+}
+.books {
+  padding: 5px;
+  margin: 5px;
+  border: 1px dotted green;
+}
+.creatBookForm {
+  border: 1px dotted green;
+  padding: 10px;
+  margin: 5px;
+  font-family: "Courier New", Courier, monospace;
+}
+.creatBookForm input {
+  border-radius: 5px;
+  border: 1px dotted green;
+}
+.authors {
+  margin: 5px;
+  padding: 5px;
+  border: 1px dotted green;
+  width: 50%;
+}
+.bookImage {
+  margin: 5px;
+  border: 1px dotted green;
+}
+.searchForm {
+  border: 1px dotted green;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  font-family: "Courier New", Courier, monospace;
+  margin: 5px;
+}
 
-  .authors{
-    margin: 5px;
-    border: 1px dotted green;
-  }
-  .bookImage{
-    margin: 5px;
-    border: 1px dotted green;
-  }
-  .searchForm{
-    border: 1px dotted green;
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Courier New', Courier, monospace;
-    margin: 5px;
-  }
+.searchForm input,
+select,
+button {
+  border-radius: 5px;
+  border: 1px solid green;
+}
 
-  .searchForm input, select{
-    border-radius: 5px;
-    border: 1px solid green;
-  }
-  
-  .greenButton {
-    width: fit-content;
-    background: green;
-    color: white;
-    font-size: 24px;
-    border-radius: 6px;
-    border: none;
-    padding: 5px 10px;
-    margin: 5px 10px;
-  }
-  .createForm{
-    display: flex;
-    flex-direction: column;
-    padding: 50px;
-    border: 1px solid green;
-    font-family: 'Courier New', Courier, monospace;
-    margin: 5px;
-  }
-  
- 
-  .btn{
-    margin:5px 0;
-    cursor: pointer;
-    font-size: 14px;
-    background: transparent;
-    border: 1px solid teal;
-    border-radius: 2px;
-    color: green;
-    
-  }
-  .book {
-    padding: 15px;
-    border: 1px solid lightgray;
-    margin-top: 10px;   
-    
-  
-  
-  }
+.createForm {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  border: 1px solid green;
+  font-family: "Courier New", Courier, monospace;
+  margin: 5px;
+}
 
-  
-  .author {
-    padding: 15px;
-    border: 1px solid lightgray;
-    margin: 10px;   
-  }
+.book {
+  padding: 15px;
+  border: 1px solid lightgray;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
 
- 
+.author {
+  padding: 15px;
+  border: 1px solid lightgray;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}

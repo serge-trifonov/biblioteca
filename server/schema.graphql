@@ -10,7 +10,6 @@ enum BookGenreEnum {
 type Book {
   _id:ID!
   authorId:ID
-  authorName: String
   title: String!
   description: String!
   genre:BookGenreEnum

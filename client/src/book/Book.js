@@ -1,15 +1,33 @@
-const Book = ({ book, i }) => {
+import { REMOVE_BOOK } from "../mutation/BookDeleteMutation";
+import { useMutation } from "@apollo/client";
+import { prop } from "ramda";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import BookModal from "./BookModal";
+
+const Book = ({ book, i, refetch, updateBook }) => {
+
+  const [deleteBook, { loading: deleting, error: deleteError }] =
+    useMutation(REMOVE_BOOK);
+
+  const remove = () => {
+    if (deleting) return;
+
+    deleteBook({
+      variables: {
+        id: prop("_id", book),
+      },
+    }).then(() => {
+      refetch();
+    });
+  };
+
   return (
     <div className="book">
-      <strong>
-        {i}. "{book.title}"{" "}
-      </strong>
-      {book.description}
-
+      {i}. "{book.title}" {book.description}
       <div>
-        <button>delete</button>
+        <DeleteOutlined onClick={remove} />
 
-        <button>update</button>
+        <EditOutlined onClick={() => updateBook(book)}/>
       </div>
     </div>
   );

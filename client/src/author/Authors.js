@@ -35,7 +35,7 @@ const Authors = () => {
       <div>
         {authors.map((author, index) => (
           <div>
-            <Author author={author} index={index + 1}/>
+            <Author author={author} refetch={refetch} index={index + 1}/>
           </div>
         ))}
       </div>

@@ -1,36 +1,60 @@
-import React from "react";
-import { Select } from "antd";
+import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { GET_ALL_GENRES } from "../query/GenreQuery";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_AUTHORS } from "../query/AuthorQuery";
-import { prop, propOr, pathOr } from "ramda";
+import { prop, propOr, pathOr, propEq, dissoc, has } from "ramda";
 import { ADD_BOOK } from "../mutation/BookMutation";
+import { UPDATE_BOOK } from "../mutation/BookUpdateMutation";
 
-const BookForm = ({ book, onCancelModal, refetch }) => {
+const BookForm = ({book, onCancelModal, refetch }) => {
+  console.log("in book form ", book);
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+    reset
+  } = useForm({defaultValues: book});
+
+  useEffect(() => {
+    reset(book)
+  }, [book]);
 
   const { data: data_genres, error } = useQuery(GET_ALL_GENRES);
   const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
+  const [newBook] = useMutation(ADD_BOOK);
+  const [updateBook] = useMutation(UPDATE_BOOK);
+
   const authors = propOr([], "getAllAuthors", data_authors);
   const genres = pathOr([], ["getGenres", "genres"], data_genres);
 
-  const [newBook] = useMutation(ADD_BOOK);
-  const onSubmit = (data) => {
-    newBook({
-      variables: {
-        book: data,
-      },
-    }).then(({ data }) => {
-      reset({ title: "", genre: "", authorId: "", description: "" });
+  const handleDone = () => {
       refetch();
       onCancelModal();
-    });
+  };
+
+  const isUpdate = has("_id", book);
+
+  const onSubmit = (data) => {
+    if (isUpdate) {
+      const id = prop("_id", data);
+      const book = dissoc("_id", data);
+      updateBook({
+        variables:{
+          id,
+          book
+        }
+      }).then(()=>{
+        handleDone();
+      })
+    } else {
+      newBook({
+        variables: {
+          book: data,
+        },
+      }).then(() => {
+        handleDone();
+      });
+    }
   };
 
   return (
@@ -41,23 +65,22 @@ const BookForm = ({ book, onCancelModal, refetch }) => {
 
         <div>AUTHOR</div>
         <select
-          defaultValue=""
           style={{ width: 120 }}
           {...register("authorId", { required: true })}
         >
           <option value=""></option>
           {authors.map((author) => (
-            <option value={prop("_id", author)}>
+            <option value={prop("_id", author)} selected={propEq("authorId", prop("_id", author), book)}>
               {prop("firstName", author)} {prop("lastName", author)}
             </option>
           ))}
         </select>
 
         <div>GENRE</div>
-        <select defaultValue="" style={{ width: 120 }} {...register("genre")}>
+        <select style={{ width: 120 }} {...register("genre")}>
           <option value=""></option>
           {genres.map((genre) => (
-            <option value={genre}>{genre}</option>
+            <option value={genre} selected={propEq("genre", genre, book)}>{genre}</option>
           ))}
         </select>
 
@@ -65,7 +88,7 @@ const BookForm = ({ book, onCancelModal, refetch }) => {
         <input {...register("description")} />
 
         <div>
-          <input type="submit" className="btn" />
+          <input type="submit" style={{ margin: "5px 0" }} />
         </div>
       </form>
     </div>
