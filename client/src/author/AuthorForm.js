@@ -1,31 +1,61 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { ADD_AUTHOR } from "../mutation/AuthorMutation";
-
+import {UPDATE_AUTHOR }from "../mutation/AuthorUpdateMutation";
+import {  has, prop,dissoc} from "ramda";
+import React, {useEffect} from "react";
 
 const AuthorForm = ({ author, onCancelModal, refetch }) => {
+
+  const handleDone = () => {
+    refetch();
+    onCancelModal();
+};
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({defaultValues: author});
 
+  useEffect(() => {
+    reset(author)
+  }, [author]);
 
+  const [updateAuthor] = useMutation(UPDATE_AUTHOR)
 
 
   const [newAuthor] = useMutation(ADD_AUTHOR);
+
+  const isUpdate = has("_id", author);
+
+  console.log("author",author)
+  console.log("isupdate",isUpdate)
+
   const onSubmit = (data) => {
+    if(isUpdate){
+      
+      const id = prop("_id", data);
+      const author = dissoc("_id", data);
+      updateAuthor({
+        variables:{
+          id,
+          author
+        }
+      }).then(()=>{
+        handleDone();
+      })
+    }
+    else{
     newAuthor({
       variables: {
         author: data,
       },
-    }).then(({ data }) => {
-      reset({ firstName: "", lastName: ""});
-      refetch();
-      onCancelModal();
+    }).then(() => {
+      handleDone();
     });
+  }
   };
 
   return (
@@ -37,7 +67,7 @@ const AuthorForm = ({ author, onCancelModal, refetch }) => {
         <input {...register("lastName", { required: true })} />
 
         <div>
-          <input type="submit" className="btn" />
+          <input type="submit"  />
         </div>
       </form>
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Book from './Book';
 import {  Button } from 'antd';
 import BookModal from './BookModal';
+import { prop } from "ramda";
 
 const defaultBook = {
   title: "",
@@ -24,7 +25,7 @@ const Books = ({ books, refetch }) => {
   };
 
   const updateBook = (book) => {
-    console.log("in update book ", book);
+    
     setBookToUpdate(book);
     showModal();
   }
@@ -38,9 +39,7 @@ const Books = ({ books, refetch }) => {
       <BookModal refetch={refetch} book={bookToUpdate} isModalVisible={isModalVisible} onCancelModal={handleCancel}/>
       <div>
         {books.map((book, i) => (
-          <div>
-            <Book book={book} refetch={refetch} i={i + 1} updateBook={updateBook}/>
-          </div>
+          <Book key={prop("_id", book)} book={book} refetch={refetch} i={i + 1} updateBook={updateBook}/>
         ))}
       </div>
     </div>

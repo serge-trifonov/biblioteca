@@ -4,8 +4,16 @@ import { useState, useEffect } from "react";
 import Author from "./Author";
 import {  Button } from 'antd';
 import AuthorModel from "./AuthorModel";
+import { prop } from "ramda";
 
 const Authors = () => {
+
+  const defaultAuthor = {
+    firstName: "",
+    lastName: ""
+    
+  };
+
   const { data, loading, refetch } = useQuery(GET_ALL_AUTHORS);
   const [authors, setAuthors] = useState([]);
   useEffect(() => {
@@ -16,6 +24,7 @@ const Authors = () => {
 
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [authorToUpdate, setAuthorToUpdate] = useState(defaultAuthor);
     
   const showModal = () => {
       setIsModalVisible(true);
@@ -23,7 +32,13 @@ const Authors = () => {
   
   const handleCancel = () => {
       setIsModalVisible(false);
+      setAuthorToUpdate(defaultAuthor)
   };
+
+  const updateAuthor = (author) => {
+    setAuthorToUpdate(author);
+    showModal();
+  }
 
   return (
     <div className="authors">
@@ -31,12 +46,10 @@ const Authors = () => {
       <Button type="primary" onClick={showModal}>
         ADD AUTHOR
       </Button>
-      <AuthorModel refetch={refetch} author={{}} isModalVisible={isModalVisible} onCancelModal={handleCancel}/>
+      <AuthorModel refetch={refetch} author={authorToUpdate} isModalVisible={isModalVisible} onCancelModal={handleCancel}/>
       <div>
         {authors.map((author, index) => (
-          <div>
-            <Author author={author} refetch={refetch} index={index + 1}/>
-          </div>
+            <Author key={prop("_id", author)} author={author} refetch={refetch} updateAuthor={updateAuthor} index={index + 1}/>
         ))}
       </div>
       

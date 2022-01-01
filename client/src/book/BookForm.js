@@ -8,7 +8,7 @@ import { ADD_BOOK } from "../mutation/BookMutation";
 import { UPDATE_BOOK } from "../mutation/BookUpdateMutation";
 
 const BookForm = ({book, onCancelModal, refetch }) => {
-  console.log("in book form ", book);
+  
   const {
     register,
     handleSubmit,
@@ -16,7 +16,7 @@ const BookForm = ({book, onCancelModal, refetch }) => {
   } = useForm({defaultValues: book});
 
   useEffect(() => {
-    reset(book)
+    reset()
   }, [book]);
 
   const { data: data_genres, error } = useQuery(GET_ALL_GENRES);

@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { prop } from "ramda";
 import { DeleteOutlined,EditOutlined } from "@ant-design/icons";
 
-const Author = ({ author, index, refetch }) => {
+const Author = ({ author, index, refetch,updateAuthor }) => {
   const [deleteAuthor, { loading: deleting, error: deleteError }] =
     useMutation(REMOVE_AUTHOR);
 
@@ -28,7 +28,7 @@ const Author = ({ author, index, refetch }) => {
       <div>
         <DeleteOutlined onClick={remove} />
 
-        <EditOutlined />
+        <EditOutlined onClick={()=>updateAuthor(author)}/>
       </div>
     </div>
   );

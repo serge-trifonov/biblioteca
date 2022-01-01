@@ -54,6 +54,12 @@ button {
   border-radius: 5px;
   border: 1px solid green;
 }
+.createForm input,
+select,
+button {
+  border-radius: 5px;
+  border: 1px solid green;
+}
 
 .createForm {
   display: flex;
