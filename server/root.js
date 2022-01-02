@@ -58,8 +58,7 @@ export const root = {
       return {ok: true};
     },
     findBooksByParams: async (params) => {
-      const tempBook = await Book.find(R.prop("book", params)).lean();
-      console.log(tempBook)
+      const tempBook = await Book.find(R.prop("bookParams", params)).lean();
       return tempBook;
     },
     getGenres: () => {

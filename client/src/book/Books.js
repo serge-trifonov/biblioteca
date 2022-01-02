@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
-import Book from './Book';
-import {  Button } from 'antd';
-import BookModal from './BookModal';
-import { prop } from "ramda";
+import React, { useState,useEffect } from "react";
+import Book from "./Book";
+import { Button } from "antd";
+import BookModal from "./BookModal";
+import Search from "../search/Search";
+import { Row, Col } from "antd";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_GENRES } from "../query/GenreQuery";
+import { GET_ALL_AUTHORS } from "../query/AuthorQuery";
+import { prop, propOr, pathOr } from "ramda";
+import { FIND_BOOKS } from "../query/FindBooksQuery";
+import Image from "rc-image";
 
 const defaultBook = {
   title: "",
   description: "",
   authorId: null,
-  genre: null
+  genre: null,
 };
 
-const Books = ({ books, refetch }) => {
+const Books = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [bookToUpdate, setBookToUpdate] = useState(defaultBook);
-  
+  const [books, setBooks] = useState([]); 
+  const [bookParams, setBookParams] = useState({});
+
+  const { data: data_genres, error } = useQuery(GET_ALL_GENRES);
+  const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
+  const {data, loading, refetch } = useQuery(FIND_BOOKS, {
+    variables: {bookParams}
+  });
+
+
+
+  const authors = propOr([], "getAllAuthors", data_authors);
+  const genres = pathOr([], ["getGenres", "genres"], data_genres);
+
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -25,23 +46,53 @@ const Books = ({ books, refetch }) => {
   };
 
   const updateBook = (book) => {
-    
     setBookToUpdate(book);
     showModal();
-  }
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setBooks(propOr([], "findBooksByParams", data));
+    }
+  }, [data, bookParams]);
 
   return (
     <div className="books">
-      <h2 >catalogue</h2>
-      <Button type="primary" onClick={showModal}>
-        ADD BOOK
-      </Button>
-      <BookModal refetch={refetch} book={bookToUpdate} isModalVisible={isModalVisible} onCancelModal={handleCancel}/>
-      <div>
-        {books.map((book, i) => (
-          <Book key={prop("_id", book)} book={book} refetch={refetch} i={i + 1} updateBook={updateBook}/>
-        ))}
-      </div>
+      <Search authors={authors} genres={genres} books={books} onSearch={setBookParams}/>
+      <Row>
+        <Col span={11}>
+          <h2>catalogue</h2>
+
+          <Button type="primary" onClick={showModal}>
+            ADD BOOK
+          </Button>
+          <BookModal
+            refetch={refetch}
+            book={bookToUpdate}
+            isModalVisible={isModalVisible}
+            onCancelModal={handleCancel}
+            authors={authors}
+            genres={genres}
+          />
+          <div>
+            {books.map((book, index) => (
+              <Book
+                key={prop("_id", book)}
+                book={book}
+                refetch={refetch}
+                index={index + 1}
+                updateBook={updateBook}
+              />
+            ))}
+          </div>
+        </Col>
+        <Col span={11} className="bookImage">
+        <Image
+      width={10}
+      src="book-image.png"
+    />
+        </Col>
+      </Row>
     </div>
   );
 };

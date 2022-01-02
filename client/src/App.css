@@ -9,11 +9,7 @@
   border: 1px dotted green;
   font-family: "Courier New", Courier, monospace;
 }
-h1,
-h2 {
-  text-align: center;
-  text-transform: uppercase;
-}
+
 .books {
   padding: 5px;
   margin: 5px;

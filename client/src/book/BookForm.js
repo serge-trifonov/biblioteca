@@ -1,51 +1,37 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { GET_ALL_GENRES } from "../query/GenreQuery";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_AUTHORS } from "../query/AuthorQuery";
-import { prop, propOr, pathOr, propEq, dissoc, has } from "ramda";
 import { ADD_BOOK } from "../mutation/BookMutation";
 import { UPDATE_BOOK } from "../mutation/BookUpdateMutation";
+import { prop, propEq, dissoc, has } from "ramda";
 
-const BookForm = ({book, onCancelModal, refetch }) => {
-  
-  const {
-    register,
-    handleSubmit,
-    reset
-  } = useForm({defaultValues: book});
+const BookForm = ({ book, onCancelModal, refetch, authors, genres, isUpdate }) => {
+  const { register, handleSubmit, reset } = useForm({ defaultValues: book });
 
   useEffect(() => {
-    reset()
+    reset(book);
   }, [book]);
 
-  const { data: data_genres, error } = useQuery(GET_ALL_GENRES);
-  const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
   const [newBook] = useMutation(ADD_BOOK);
   const [updateBook] = useMutation(UPDATE_BOOK);
 
-  const authors = propOr([], "getAllAuthors", data_authors);
-  const genres = pathOr([], ["getGenres", "genres"], data_genres);
-
   const handleDone = () => {
-      refetch();
-      onCancelModal();
+    refetch();
+    onCancelModal();
   };
-
-  const isUpdate = has("_id", book);
 
   const onSubmit = (data) => {
     if (isUpdate) {
       const id = prop("_id", data);
       const book = dissoc("_id", data);
       updateBook({
-        variables:{
+        variables: {
           id,
-          book
-        }
-      }).then(()=>{
+          book,
+        },
+      }).then(() => {
         handleDone();
-      })
+      });
     } else {
       newBook({
         variables: {
@@ -70,7 +56,10 @@ const BookForm = ({book, onCancelModal, refetch }) => {
         >
           <option value=""></option>
           {authors.map((author) => (
-            <option value={prop("_id", author)} selected={propEq("authorId", prop("_id", author), book)}>
+            <option
+              value={prop("_id", author)}
+              selected={propEq("authorId", prop("_id", author), book)}
+            >
               {prop("firstName", author)} {prop("lastName", author)}
             </option>
           ))}
@@ -80,7 +69,9 @@ const BookForm = ({book, onCancelModal, refetch }) => {
         <select style={{ width: 120 }} {...register("genre")}>
           <option value=""></option>
           {genres.map((genre) => (
-            <option value={genre} selected={propEq("genre", genre, book)}>{genre}</option>
+            <option value={genre} selected={propEq("genre", genre, book)}>
+              {genre}
+            </option>
           ))}
         </select>
 

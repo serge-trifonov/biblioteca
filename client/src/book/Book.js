@@ -4,7 +4,7 @@ import { prop } from "ramda";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import BookModal from "./BookModal";
 
-const Book = ({ book, i, refetch, updateBook }) => {
+const Book = ({ book, index, refetch, updateBook }) => {
 
   const [deleteBook, { loading: deleting, error: deleteError }] =
     useMutation(REMOVE_BOOK);
@@ -23,7 +23,7 @@ const Book = ({ book, i, refetch, updateBook }) => {
 
   return (
     <div className="book">
-      {i}. "{book.title}" {book.description}
+      {index}. "{book.title}" {book.description}
       <div>
         <DeleteOutlined onClick={remove} />
 

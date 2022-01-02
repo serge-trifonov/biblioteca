@@ -5,7 +5,7 @@ import {UPDATE_AUTHOR }from "../mutation/AuthorUpdateMutation";
 import {  has, prop,dissoc} from "ramda";
 import React, {useEffect} from "react";
 
-const AuthorForm = ({ author, onCancelModal, refetch }) => {
+const AuthorForm = ({ author, onCancelModal, refetch, isUpdate }) => {
 
   const handleDone = () => {
     refetch();
@@ -28,7 +28,6 @@ const AuthorForm = ({ author, onCancelModal, refetch }) => {
 
   const [newAuthor] = useMutation(ADD_AUTHOR);
 
-  const isUpdate = has("_id", author);
 
   console.log("author",author)
   console.log("isupdate",isUpdate)

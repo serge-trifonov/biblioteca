@@ -4,7 +4,8 @@ enum BookGenreEnum {
   HISTOIRE,
   ANIMAUX,
   PHILOSOPHIE,
-  RELIGION
+  RELIGION,
+  ROMAN
 }
 
 type Book {
@@ -52,7 +53,7 @@ type Query {
   getAuthor(_id: ID!): Author
   getBooks:[Book]
   getBook(_id:ID!):Book
-  findBooksByParams(book:BookInputByParams!):[Book]
+  findBooksByParams(bookParams:BookInputByParams!):[Book]
   getGenres: Genre
 }
 

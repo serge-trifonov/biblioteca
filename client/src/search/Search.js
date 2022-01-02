@@ -1,35 +1,58 @@
 import "antd/dist/antd.css";
+import { useForm } from "react-hook-form";
+import { prop, propEq, reject, anyPass, isEmpty, isNil } from "ramda";
 
-const Search = () => {
+const Search = ({authors,genres,books,onSearch}) => {
+
+  const { register, handleSubmit, reset } = useForm({ defaultValues: {} });
+
+  const onSubmit = (data) => {
+    data = reject(anyPass([isEmpty, isNil]))(data); //pour supprimer les champs vides et nulles
+    onSearch(data);
+    /*reset({
+        title: null,
+        authorId: null,
+        genre: null
+    });*/
+  };
+
   return (
     <div>
-      <form className="searchForm">
+      <form className="searchForm" onSubmit={handleSubmit(onSubmit)}>
         <div> TITLE:
 
-        <input type="text" />
+        <input type="text"{...register("title")}/>
         </div>
 
-        <div>
+        
         <label>AUTHOR:</label>
-        <select id="authors" name="authors">
+        <select
+          style={{ width: 120 }}
+          {...register("authorId")}
+        >
           <option value=""></option>
-          <option value="balzac">Balzac</option>
-          <option value="zola">Zola</option>
-          <option value="sade">Sade</option>
-          <option value="new-author">NEW AUTHOR</option>
+          {authors.map((author) => (
+            <option
+              value={prop("_id", author)}
+              selected={propEq("authorId", prop("_id", author), books)}
+            >
+              {prop("firstName", author)} {prop("lastName", author)}
+            </option>
+          ))}
         </select>
-        </div>
-        <div>
+        
+        
         <label>GENRE:</label>
-        <select id="genre" name="genre">
+        <select style={{ width: 120 }} {...register("genre")}>
           <option value=""></option>
-          <option value="polar">POLAR</option>
-          <option value="histoire">HISTOIRE</option>
-          <option value="animaux">ANIMAUX</option>
-          <option value="informatique">INFORMATIQUE</option>
-          <option value="religion">RELIGION</option>
+          {genres.map((genre) => (
+            <option value={genre} selected={propEq("genre", genre, books)}>
+              {genre}
+            </option>
+          ))}
         </select>
-        </div>
+
+        
 
         <div style={{margin:'0 5px'}}>
           <button>SEARCH</button>
