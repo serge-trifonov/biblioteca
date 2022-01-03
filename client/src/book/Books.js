@@ -10,12 +10,16 @@ import { GET_ALL_AUTHORS } from "../query/AuthorQuery";
 import { prop, propOr, pathOr } from "ramda";
 import { FIND_BOOKS } from "../query/FindBooksQuery";
 import Image from "rc-image";
+import "../App.css";
+import BookInfo from "./BookInfo";
+import DeleteModal from "../modal/DeleteModal";
 
 const defaultBook = {
   title: "",
   description: "",
   authorId: null,
   genre: null,
+  year: null
 };
 
 const Books = () => {
@@ -23,6 +27,7 @@ const Books = () => {
   const [bookToUpdate, setBookToUpdate] = useState(defaultBook);
   const [books, setBooks] = useState([]); 
   const [bookParams, setBookParams] = useState({});
+  const [isBookSelected, setIsBookSelected] = useState(false);
 
   const { data: data_genres, error } = useQuery(GET_ALL_GENRES);
   const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
@@ -37,6 +42,7 @@ const Books = () => {
 
 
   const showModal = () => {
+    setIsBookSelected(false);
     setIsModalVisible(true);
   };
 
@@ -50,6 +56,11 @@ const Books = () => {
     showModal();
   };
 
+  const selectBook = (book) => {
+    setIsBookSelected(true);
+    setBookToUpdate(book);
+  }
+
   useEffect(() => {
     if (!loading) {
       setBooks(propOr([], "findBooksByParams", data));
@@ -57,13 +68,13 @@ const Books = () => {
   }, [data, bookParams]);
 
   return (
-    <div className="books">
+    <div className="main">
       <Search authors={authors} genres={genres} books={books} onSearch={setBookParams}/>
-      <Row>
-        <Col span={11}>
-          <h2>catalogue</h2>
+      <Row className="books">
+        <Col span={11} className="catalogue">
+          <h2 id="sub-title">catalogue</h2>
 
-          <Button type="primary" onClick={showModal}>
+          <Button type="primary" block onClick={showModal}>
             ADD BOOK
           </Button>
           <BookModal
@@ -74,7 +85,8 @@ const Books = () => {
             authors={authors}
             genres={genres}
           />
-          <div>
+          
+          <div >
             {books.map((book, index) => (
               <Book
                 key={prop("_id", book)}
@@ -82,15 +94,19 @@ const Books = () => {
                 refetch={refetch}
                 index={index + 1}
                 updateBook={updateBook}
+                onSelect={selectBook}
               />
             ))}
           </div>
         </Col>
-        <Col span={11} className="bookImage">
-        <Image
-      width={10}
-      src="book-image.png"
-    />
+        <Col span={11} className="img">
+        {isBookSelected?
+         <BookInfo book={bookToUpdate}/>
+          : 
+          <Image
+            className="bookImage"
+            src="book-image4.png"
+          />}
         </Col>
       </Row>
     </div>

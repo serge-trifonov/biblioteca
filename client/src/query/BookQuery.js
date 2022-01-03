@@ -7,7 +7,8 @@ query{
       title,
       authorId,
       genre,
-      description
+      description,
+      year
     }
   }
 `

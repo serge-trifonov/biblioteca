@@ -8,7 +8,8 @@ const book = {
   genre: {
     type: String,
     enum: genres
-  }
+  },
+  year: String
 };
 
 export default book;

@@ -7,7 +7,8 @@ query findBooksByParams($bookParams:BookInputByParams!){
         title,
         description,
         authorId,
-        genre
+        genre,
+        year
       }
   }
 `

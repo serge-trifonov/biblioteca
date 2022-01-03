@@ -14,6 +14,7 @@ type Book {
   title: String!
   description: String!
   genre:BookGenreEnum
+  year:String
 }
 
 type Genre {
@@ -25,11 +26,13 @@ type Author {
   firstName: String!
   lastName: String!
   books:[Book]
+  country:String
 }
 
 input AuthorInput {
     firstName:String
     lastName:String
+    country:String
 }
 
 
@@ -38,6 +41,7 @@ input BookInput {
     description:String
     authorId:ID 
     genre:BookGenreEnum
+    year:String
 }
 
 input BookInputByParams {

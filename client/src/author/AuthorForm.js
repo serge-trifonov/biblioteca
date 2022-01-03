@@ -64,6 +64,8 @@ const AuthorForm = ({ author, onCancelModal, refetch, isUpdate }) => {
         <input {...register("firstName", { required: true })} />
         <div>LAST NAME</div>
         <input {...register("lastName", { required: true })} />
+        <div>COUNTRY</div>
+        <input {...register("country", { required: true })} />
 
         <div>
           <input type="submit"  />

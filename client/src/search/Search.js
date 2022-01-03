@@ -2,8 +2,7 @@ import "antd/dist/antd.css";
 import { useForm } from "react-hook-form";
 import { prop, propEq, reject, anyPass, isEmpty, isNil } from "ramda";
 
-const Search = ({authors,genres,books,onSearch}) => {
-
+const Search = ({ authors, genres, books, onSearch }) => {
   const { register, handleSubmit, reset } = useForm({ defaultValues: {} });
 
   const onSubmit = (data) => {
@@ -19,15 +18,12 @@ const Search = ({authors,genres,books,onSearch}) => {
   return (
     <div>
       <form className="searchForm" onSubmit={handleSubmit(onSubmit)}>
-        <div> TITLE:
+        <label>TITLE:</label>
+        <input className="search-field" type="text" {...register("title")} />
 
-        <input type="text"{...register("title")}/>
-        </div>
-
-        
         <label>AUTHOR:</label>
         <select
-          style={{ width: 120 }}
+          className="search-field"
           {...register("authorId")}
         >
           <option value=""></option>
@@ -40,10 +36,9 @@ const Search = ({authors,genres,books,onSearch}) => {
             </option>
           ))}
         </select>
-        
-        
+
         <label>GENRE:</label>
-        <select style={{ width: 120 }} {...register("genre")}>
+        <select className="search-field" {...register("genre")}>
           <option value=""></option>
           {genres.map((genre) => (
             <option value={genre} selected={propEq("genre", genre, books)}>
@@ -52,11 +47,7 @@ const Search = ({authors,genres,books,onSearch}) => {
           ))}
         </select>
 
-        
-
-        <div style={{margin:'0 5px'}}>
-          <button>SEARCH</button>
-        </div>
+        <button className="search-button">SEARCH</button>
       </form>
     </div>
   );

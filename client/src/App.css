@@ -6,14 +6,29 @@
 
 .App {
   margin: 5px;
-  border: 1px dotted green;
   font-family: "Courier New", Courier, monospace;
+  
 }
 
-.books {
+.main {
+  padding-top: 5px;
+  background-color:rgb(225, 235, 235);
+}
+.biblio-title{
+  text-align: center;
+  text-transform:uppercase;
+  font-weight: bold;
+  color: rgb(57, 64, 87);
+}
+#sub-title{
+  text-align: center;
+  text-transform:uppercase;  
+}
+.catalogue {
   padding: 5px;
   margin: 5px;
-  border: 1px dotted green;
+  background-color:rgb(225, 235, 235);
+  box-shadow: 2px 2px 2px 2px rgb(156, 155, 155);
 }
 .creatBookForm {
   border: 1px dotted green;
@@ -21,40 +36,34 @@
   margin: 5px;
   font-family: "Courier New", Courier, monospace;
 }
-.creatBookForm input {
-  border-radius: 5px;
-  border: 1px dotted green;
-}
+
 .authors {
-  margin: 5px;
   padding: 5px;
-  border: 1px dotted green;
-  width: 50%;
-}
-.bookImage {
   margin: 5px;
-  border: 1px dotted green;
+  background-color:rgb(225, 235, 235);
+  box-shadow: 2px 2px 2px 2px rgb(156, 155, 155);
+
 }
-.searchForm {
-  border: 1px dotted green;
-  padding: 10px;
-  display: flex;
-  justify-content: flex-start;
-  font-family: "Courier New", Courier, monospace;
-  margin: 5px;
+.bookImage { 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
 }
 
-.searchForm input,
-select,
-button {
-  border-radius: 5px;
-  border: 1px solid green;
+.img {
+  margin: 5px;
+  background-color: rgb(225, 235, 235);
+  
 }
-.createForm input,
-select,
-button {
-  border-radius: 5px;
-  border: 1px solid green;
+
+.searchForm {
+  text-align: center;
+  padding: 10px;
+  font-family: "Courier New", Courier, monospace;
+  margin: 5px;
+  width: 100%;
+  margin-left: 0;
 }
 
 .createForm {
@@ -68,16 +77,61 @@ button {
 
 .book {
   padding: 15px;
-  border: 1px solid lightgray;
+  background-color: rgb(225, 235, 235);
   margin-top: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(187, 187, 187);
   display: flex;
   justify-content: space-between;
 }
 
 .author {
   padding: 15px;
-  border: 1px solid lightgray;
+  background-color: rgb(225, 235, 235);
   margin-top: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(187, 187, 187);
   display: flex;
   justify-content: space-between;
+}
+
+.action{
+  margin:0 5px;
+}
+.bookInfo{
+  margin: 5px;
+  
+}
+.authorInfo{
+  margin: 5px;
+}
+.title-book-author{
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.search-field {
+  width: 120;
+  margin: 0 15px;
+  border:1px solid rgb(133, 132, 132);
+  border-radius: 5px;
+  height: 20px;
+}
+
+.search-button {
+  border:1px solid rgb(133, 132, 132);
+  border-radius: 5px;
+  padding: 0 5px;
+}
+
+.ant-btn-primary {
+  background-color: rgb(57, 64, 87) !important;
+  border:1px solid rgb(43, 43, 43) !important;
+}
+
+.mini-img {
+  width: 20px !important;
+}
+.important-message{
+  color: green;
+  font-style: italic;
+  
 }

@@ -7,6 +7,7 @@ import { prop, propEq, dissoc, has } from "ramda";
 
 const BookForm = ({ book, onCancelModal, refetch, authors, genres, isUpdate }) => {
   const { register, handleSubmit, reset } = useForm({ defaultValues: book });
+  console.log(book);
 
   useEffect(() => {
     reset(book);
@@ -77,6 +78,8 @@ const BookForm = ({ book, onCancelModal, refetch, authors, genres, isUpdate }) =
 
         <div>DESCRIPTION</div>
         <input {...register("description")} />
+        <div>YEAR</div>
+        <input {...register("year")} />
 
         <div>
           <input type="submit" style={{ margin: "5px 0" }} />
