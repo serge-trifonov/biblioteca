@@ -5,28 +5,13 @@ import { DeleteOutlined, EditOutlined ,ZoomInOutlined} from "@ant-design/icons";
 import DeleteModal from "../modal/DeleteModal";
 
 
-const Book = ({ book, index, refetch, updateBook, onSelect }) => {
-
-  const [deleteBook, { loading: deleting, error: deleteError }] =
-    useMutation(REMOVE_BOOK);
-
-  const remove = (book) => {
-    if (deleting) return;
-
-    deleteBook({
-      variables: {
-        id: prop("_id", book),
-      },
-    }).then(() => {
-      refetch();
-    });
-  };
-
+const Book = ({ book, index, onDelete, updateBook, onSelect }) => {
+  
   return (
     <div className="book">
       {index}. "{book.title}" {book.genre}
       <div className="action">
-        <DeleteOutlined onClick={console.log("delete")} />
+        <DeleteOutlined onClick={()=>onDelete(book)} />
 
         <EditOutlined onClick={() => updateBook(book)}/>
 

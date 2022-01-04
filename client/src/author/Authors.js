@@ -8,6 +8,9 @@ import { prop } from "ramda";
 import AuthorInfo from "./AuthorInfo";
 import { Row, Col } from "antd";
 import Image from "rc-image";
+import { useMutation } from "@apollo/client";
+import { REMOVE_AUTHOR } from "../mutation/AuthorDeleteMutation";
+import DeleteModal from "../modal/DeleteModal";
 
 const Authors = () => {
   const defaultAuthor = {
@@ -28,13 +31,39 @@ const Authors = () => {
   const [authorToUpdate, setAuthorToUpdate] = useState(defaultAuthor);
   const [isAuthorSelected, setIsAuthorSelected] = useState(false); //nous dit s'il y a un auteur selectionné
 
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [deleteAuthor, { loading: deleting, error: deleteError }] =
+    useMutation(REMOVE_AUTHOR);
+
+  const remove = () => {
+    if (deleting) return;
+
+    deleteAuthor({
+      variables: {
+        id: prop("_id", authorToUpdate),
+      },
+    }).then(() => {
+      refetch();
+      setIsDeleteModalVisible(false);
+    });
+  };
+
+  const onDelete = (author) => {
+    setAuthorToUpdate(author);
+    setIsDeleteModalVisible(true);
+  }
+
+  
   const showModal = () => {
     setIsAuthorSelected(false);
     setIsModalVisible(true);
   };
 
+  
+
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsDeleteModalVisible(false);
     setAuthorToUpdate(defaultAuthor);
   };
 
@@ -61,6 +90,12 @@ const Authors = () => {
           isModalVisible={isModalVisible}
           onCancelModal={handleCancel}
         />
+        <DeleteModal
+            onConfirm={remove}
+            isModalVisible={isDeleteModalVisible}
+            onCancelModal={handleCancel}
+            text={`Are you sure that you want to delete ${prop('firstName', authorToUpdate)} ?`}
+          />
         <div>
           {authors.map((author, index) => (
             <Author
@@ -70,6 +105,7 @@ const Authors = () => {
               updateAuthor={updateAuthor}
               index={index + 1}
               onSelect={selectAuthor}
+              onDelete={onDelete}
             />
           ))}
         </div>

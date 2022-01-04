@@ -13,6 +13,8 @@ import Image from "rc-image";
 import "../App.css";
 import BookInfo from "./BookInfo";
 import DeleteModal from "../modal/DeleteModal";
+import { useMutation } from "@apollo/client";
+import { REMOVE_BOOK } from "../mutation/BookDeleteMutation";
 
 const defaultBook = {
   title: "",
@@ -24,18 +26,40 @@ const defaultBook = {
 
 const Books = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [bookToUpdate, setBookToUpdate] = useState(defaultBook);
   const [books, setBooks] = useState([]); 
   const [bookParams, setBookParams] = useState({});
   const [isBookSelected, setIsBookSelected] = useState(false);
 
-  const { data: data_genres, error } = useQuery(GET_ALL_GENRES);
+
+
+  const { data: data_genres } = useQuery(GET_ALL_GENRES);
   const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
   const {data, loading, refetch } = useQuery(FIND_BOOKS, {
     variables: {bookParams}
   });
 
+  const [deleteBook, { loading: deleting}] =
+    useMutation(REMOVE_BOOK);
 
+  const remove = () => {
+    if (deleting) return;
+
+    deleteBook({
+      variables: {
+        id: prop("_id", bookToUpdate),
+      },
+    }).then(() => {
+      refetch();
+      setIsDeleteModalVisible(false);
+    });
+  };
+
+  const onDelete = (book) => {
+    setBookToUpdate(book);
+    setIsDeleteModalVisible(true);
+  }
 
   const authors = propOr([], "getAllAuthors", data_authors);
   const genres = pathOr([], ["getGenres", "genres"], data_genres);
@@ -48,6 +72,7 @@ const Books = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsDeleteModalVisible(false);
     setBookToUpdate(defaultBook);
   };
 
@@ -69,7 +94,12 @@ const Books = () => {
 
   return (
     <div className="main">
-      <Search authors={authors} genres={genres} books={books} onSearch={setBookParams}/>
+      <Search
+        authors={authors}
+        genres={genres}
+        books={books}
+        onSearch={setBookParams}
+      />
       <Row className="books">
         <Col span={11} className="catalogue">
           <h2 id="sub-title">catalogue</h2>
@@ -85,8 +115,15 @@ const Books = () => {
             authors={authors}
             genres={genres}
           />
-          
-          <div >
+
+          <DeleteModal
+            onConfirm={remove}
+            isModalVisible={isDeleteModalVisible}
+            onCancelModal={handleCancel}
+            text={`Are you sure that you want to delete ${prop('title', bookToUpdate)} ?`}
+          />
+
+          <div>
             {books.map((book, index) => (
               <Book
                 key={prop("_id", book)}
@@ -95,18 +132,17 @@ const Books = () => {
                 index={index + 1}
                 updateBook={updateBook}
                 onSelect={selectBook}
+                onDelete={onDelete}
               />
             ))}
           </div>
         </Col>
         <Col span={11} className="img">
-        {isBookSelected?
-         <BookInfo book={bookToUpdate}/>
-          : 
-          <Image
-            className="bookImage"
-            src="book-image4.png"
-          />}
+          {isBookSelected ? (
+            <BookInfo book={bookToUpdate} />
+          ) : (
+            <Image className="bookImage" src="book-image4.png" />
+          )}
         </Col>
       </Row>
     </div>

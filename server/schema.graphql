@@ -1,20 +1,20 @@
 enum BookGenreEnum {
-  POLAR,
-  INFORMATIQUE,
-  HISTOIRE,
-  ANIMAUX,
-  PHILOSOPHIE,
-  RELIGION,
+  POLAR
+  INFORMATIQUE
+  HISTOIRE
+  ANIMAUX
+  PHILOSOPHIE
+  RELIGION
   ROMAN
 }
 
 type Book {
-  _id:ID!
-  authorId:ID
+  _id: ID!
+  authorId: ID
   title: String!
   description: String!
-  genre:BookGenreEnum
-  year:String
+  genre: BookGenreEnum
+  year: String
 }
 
 type Genre {
@@ -25,39 +25,37 @@ type Author {
   _id: ID!
   firstName: String!
   lastName: String!
-  books:[Book]
-  country:String
+  books: [Book]
+  country: String
 }
 
 input AuthorInput {
-    firstName:String
-    lastName:String
-    country:String
+  firstName: String
+  lastName: String
+  country: String
 }
 
-
 input BookInput {
-    title:String!
-    description:String
-    authorId:ID 
-    genre:BookGenreEnum
-    year:String
+  title: String!
+  description: String
+  authorId: ID
+  genre: BookGenreEnum
+  year: String
 }
 
 input BookInputByParams {
-    title:String
-    description:String
-    authorId:ID
-    genre:BookGenreEnum
-    
+  title: String
+  description: String
+  authorId: ID
+  genre: BookGenreEnum
 }
 
 type Query {
   getAllAuthors: [Author]
   getAuthor(_id: ID!): Author
-  getBooks:[Book]
-  getBook(_id:ID!):Book
-  findBooksByParams(bookParams:BookInputByParams!):[Book]
+  getBooks: [Book]
+  getBook(_id: ID!): Book
+  findBooksByParams(bookParams: BookInputByParams!): [Book]
   getGenres: Genre
 }
 
@@ -69,8 +67,7 @@ type Mutation {
   addAuthor(author: AuthorInput!): MutationResponse
   addBook(book: BookInput!): MutationResponse
   deleteAuthor(id: ID!): MutationResponse
-  deleteBook(id:ID!):MutationResponse
-  updateAuthor(id: ID!, author: AuthorInput!):MutationResponse
-  updateBook(id: ID!, book: BookInput!):MutationResponse
-  
+  deleteBook(id: ID!): MutationResponse
+  updateAuthor(id: ID!, author: AuthorInput!): MutationResponse
+  updateBook(id: ID!, book: BookInput!): MutationResponse
 }

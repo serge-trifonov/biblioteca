@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const author = { 
-    firstName: String, 
-    lastName: String,
-    country: String
-}
+const author = {
+  firstName: String,
+  lastName: String,
+  country: String,
+};
 
 export default author;
