@@ -6,6 +6,7 @@ enum BookGenreEnum {
   PHILOSOPHIE
   RELIGION
   ROMAN
+  CLASSIC
 }
 
 type Book {

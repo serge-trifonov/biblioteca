@@ -1,5 +1,5 @@
 import React from "react";
-import {  prop, propOr, length } from "ramda";
+import { prop, propOr, length } from "ramda";
 import { useQuery } from "@apollo/client";
 import { FIND_BOOKS } from "../query/FindBooksQuery";
 
@@ -17,9 +17,7 @@ const AuthorInfo = ({ author }) => {
 
   return (
     <div className="authorInfo">
-      <div className="title-book-author">
-        {name}
-      </div>
+      <div className="title-book-author">{name}</div>
       <div>
         <strong>COUNTRY:</strong> {author.country}{" "}
       </div>

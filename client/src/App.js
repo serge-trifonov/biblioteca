@@ -15,10 +15,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1 className="biblio-title">Biblioteca <Image className="mini-img" src="book-img.png"/></h1>
-      <Button type="primary" onClick={onChangePage} >{buttonAuthorBook} </Button>
+      <h1 className="biblio-title">
+        Biblioteca <Image className="mini-img" src="book-img.png" />
+      </h1>
+      <Button type="primary" onClick={onChangePage}>
+        {buttonAuthorBook}{" "}
+      </Button>
       {showAuthors && <Authors />}
-      {!showAuthors &&  <Books />}
+      {!showAuthors && <Books />}
     </div>
   );
 };

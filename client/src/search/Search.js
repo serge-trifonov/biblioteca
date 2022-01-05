@@ -6,7 +6,7 @@ const Search = ({ authors, genres, books, onSearch }) => {
   const { register, handleSubmit, reset } = useForm({ defaultValues: {} });
 
   const onSubmit = (data) => {
-    data = reject(anyPass([isEmpty, isNil]))(data); //pour supprimer les champs vides et nulles
+    data = reject(anyPass([isEmpty, isNil]))(data);
     onSearch(data);
     /*reset({
         title: null,
@@ -22,10 +22,7 @@ const Search = ({ authors, genres, books, onSearch }) => {
         <input className="search-field" type="text" {...register("title")} />
 
         <label>AUTHOR:</label>
-        <select
-          className="search-field"
-          {...register("authorId")}
-        >
+        <select className="search-field" {...register("authorId")}>
           <option value=""></option>
           {authors.map((author) => (
             <option

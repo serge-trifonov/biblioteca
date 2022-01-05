@@ -5,4 +5,5 @@ export const genres = [
     "ANIMAUX",
     "POLITIQUE",
     "CUISINE",
+    "CLASSIC"
   ];

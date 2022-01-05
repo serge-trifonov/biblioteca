@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "antd";
-import { has, toUpper, prop } from "ramda";
+import { has, prop } from "ramda";
 
 import AuthorForm from "./AuthorForm";
 

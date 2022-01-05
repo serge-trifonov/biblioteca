@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { ADD_BOOK } from "../mutation/BookMutation";
 import { UPDATE_BOOK } from "../mutation/BookUpdateMutation";
-import { prop, propEq, dissoc, has } from "ramda";
+import { prop, propEq, dissoc} from "ramda";
 
-const BookForm = ({ book, onCancelModal, refetch, authors, genres, isUpdate }) => {
+const BookForm = ({
+  book,
+  onCancelModal,
+  refetch,
+  authors,
+  genres,
+  isUpdate,
+}) => {
   const { register, handleSubmit, reset } = useForm({ defaultValues: book });
   console.log(book);
 

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Book from "./Book";
 import { Button } from "antd";
 import BookModal from "./BookModal";
@@ -21,27 +21,24 @@ const defaultBook = {
   description: "",
   authorId: null,
   genre: null,
-  year: null
+  year: null,
 };
 
 const Books = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [bookToUpdate, setBookToUpdate] = useState(defaultBook);
-  const [books, setBooks] = useState([]); 
+  const [books, setBooks] = useState([]);
   const [bookParams, setBookParams] = useState({});
   const [isBookSelected, setIsBookSelected] = useState(false);
 
-
-
   const { data: data_genres } = useQuery(GET_ALL_GENRES);
   const { data: data_authors } = useQuery(GET_ALL_AUTHORS);
-  const {data, loading, refetch } = useQuery(FIND_BOOKS, {
-    variables: {bookParams}
+  const { data, loading, refetch } = useQuery(FIND_BOOKS, {
+    variables: { bookParams },
   });
 
-  const [deleteBook, { loading: deleting}] =
-    useMutation(REMOVE_BOOK);
+  const [deleteBook, { loading: deleting }] = useMutation(REMOVE_BOOK);
 
   const remove = () => {
     if (deleting) return;
@@ -59,11 +56,10 @@ const Books = () => {
   const onDelete = (book) => {
     setBookToUpdate(book);
     setIsDeleteModalVisible(true);
-  }
+  };
 
   const authors = propOr([], "getAllAuthors", data_authors);
   const genres = pathOr([], ["getGenres", "genres"], data_genres);
-
 
   const showModal = () => {
     setIsBookSelected(false);
@@ -84,7 +80,7 @@ const Books = () => {
   const selectBook = (book) => {
     setIsBookSelected(true);
     setBookToUpdate(book);
-  }
+  };
 
   useEffect(() => {
     if (!loading) {
@@ -92,13 +88,19 @@ const Books = () => {
     }
   }, [data, bookParams]);
 
+  const onSearch = params => {
+    setBookToUpdate(defaultBook);
+    setIsBookSelected(false);
+    setBookParams(params);
+  }
+
   return (
     <div className="main">
       <Search
         authors={authors}
         genres={genres}
         books={books}
-        onSearch={setBookParams}
+        onSearch={onSearch}
       />
       <Row className="books">
         <Col span={11} className="catalogue">
@@ -120,7 +122,10 @@ const Books = () => {
             onConfirm={remove}
             isModalVisible={isDeleteModalVisible}
             onCancelModal={handleCancel}
-            text={`Are you sure that you want to delete ${prop('title', bookToUpdate)} ?`}
+            text={`Are you sure that you want to delete ${prop(
+              "title",
+              bookToUpdate
+            )} ?`}
           />
 
           <div>

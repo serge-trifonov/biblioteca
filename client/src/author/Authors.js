@@ -32,7 +32,7 @@ const Authors = () => {
   const [isAuthorSelected, setIsAuthorSelected] = useState(false); //nous dit s'il y a un auteur selectionné
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [deleteAuthor, { loading: deleting, error: deleteError }] =
+  const [deleteAuthor, { loading: deleting }] =
     useMutation(REMOVE_AUTHOR);
 
   const remove = () => {
@@ -51,15 +51,12 @@ const Authors = () => {
   const onDelete = (author) => {
     setAuthorToUpdate(author);
     setIsDeleteModalVisible(true);
-  }
+  };
 
-  
   const showModal = () => {
     setIsAuthorSelected(false);
     setIsModalVisible(true);
   };
-
-  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -73,8 +70,8 @@ const Authors = () => {
   };
 
   const selectAuthor = (author) => {
-    setAuthorToUpdate(author); // quel auteur on veut voir dans l'info
-    setIsAuthorSelected(true); // boolean qui dit qu'il faut afficher l'info de l'auteur
+    setAuthorToUpdate(author);
+    setIsAuthorSelected(true);
   };
 
   return (
@@ -91,11 +88,14 @@ const Authors = () => {
           onCancelModal={handleCancel}
         />
         <DeleteModal
-            onConfirm={remove}
-            isModalVisible={isDeleteModalVisible}
-            onCancelModal={handleCancel}
-            text={`Are you sure that you want to delete ${prop('firstName', authorToUpdate)} ?`}
-          />
+          onConfirm={remove}
+          isModalVisible={isDeleteModalVisible}
+          onCancelModal={handleCancel}
+          text={`Are you sure that you want to delete ${prop(
+            "firstName",
+            authorToUpdate
+          )} ?`}
+        />
         <div>
           {authors.map((author, index) => (
             <Author
