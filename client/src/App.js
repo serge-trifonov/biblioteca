@@ -19,7 +19,7 @@ const App = () => {
         Biblioteca <Image className="mini-img" src="book-img.png" />
       </h1>
       <Button type="primary" onClick={onChangePage}>
-        {buttonAuthorBook}{" "}
+        {buttonAuthorBook}
       </Button>
       {showAuthors && <Authors />}
       {!showAuthors && <Books />}
